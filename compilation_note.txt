@@ -1,0 +1,1 @@
+module purge; module load intel netCDF-Fortran; make clean; make (run from my linux computer)

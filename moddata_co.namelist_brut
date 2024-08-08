@@ -1,0 +1,197 @@
+!!======================================================================
+!!                   ***  Run management namelists  ***  
+!!======================================================================
+!
+!-----------------------------------------------------------------------
+&namglob  ! parameters of the run
+!-----------------------------------------------------------------------
+   lambda    =   0.0080  !  Laplacian filter
+   nst       =       25  !  Laplacian filter
+   lscale    =      5E5  !  Laplacian filter 
+   NbStdDev  =     1000  !  Barrier in std deviation
+   ln_geow   =   .false. !  Geographic weight (.false. => w=1; .true. => w=cos(lat))
+
+   ninvar    = {nb_variables} !  Number of variables defined below in invar
+   box_file  = '' ! used if 'file' for boxtype in a variable def
+
+   debut_mois       = {debut_mois_data}      ! DON'T CHANGE
+   fin_mois         = {fin_mois_data}        ! DON'T CHANGE
+   debut_mois_model = {debut_mois_model}     ! DON'T CHANGE
+   fin_mois_model   = {fin_mois_model}       ! DON'T CHANGE
+   frequence        = {frequence_mod}        ! DON'T CHANGE
+   t1_y             = {NTIMERUNY}            ! DON'T CHANGE
+   t1_d             = {NTIMERUND}            ! DON'T CHANGE
+   newdata_atmos    = '{file_newdata_atmos}' ! DON'T CHANGE
+   newdata_atmos2   = '{file_newdata_atmos2}' ! DON'T CHANGE
+   newdata_atmos3   = '{file_newdata_atmos3}' ! DON'T CHANGE  
+   newdata_atmos4   = '{file_newdata_atmos4}' ! DON'T CHANGE
+   newdata_atmos5   = '{file_newdata_atmos5}' ! DON'T CHANGE 
+   newdata_atmos6   = '{file_newdata_atmos6}' ! DON'T CHANGE
+   newdata_ocean    = '{file_newdata_ocean}' ! DON'T CHANGE
+   newdata_evolu    = '{file_newdata_evolu}' ! DON'T CHANGE
+   fcostEPFfile     = '{FCOSTEPFOUT}'        ! DON'T CHANGE
+   OceanAreaPath    = '{CLIOareaPath}'       ! DON'T CHANGE
+   OceanAreaVar     = '{CLIOareaVar}'        ! DON'T CHANGE
+/
+!-----------------------------------------------------------------------
+&namdom   ! limitation of the domain
+          ! Whole world (0 360 -90 90) OR Atlantic+Europe (330 30 20 70)
+!-----------------------------------------------------------------------   
+   lon_min   =        0
+   lon_max   =      360
+   lat_min   =      -90
+   lat_max   =       90
+/
+!-----------------------------------------------------------------------
+&namvar   ! variables definition
+!-----------------------------------------------------------------------  
+   invar     = 
+!-----------------------------------------------------------------------
+!  template   
+!-----------------------------------------------------------------------
+             ! var name
+             ! var type (atmos, ocean, evolu)
+             ! 4D structure (if <4D fill with 1)
+             ! weigth
+             ! sqrt(Ci): Instrumental error be careful it's the standard deviation (see S. Dubinkina paper 2011)
+             ! Sigma: Weight for the model covariance matrix, 0-> if cov matrix should be diag (see S. Dubinkina paper 2011)
+             ! Number of boxes. Zero if none. 
+             ! Box Type (square, file)
+             ! ObsFileStart: startDateY (offline mode: ignored in online)
+             ! ObsFileStart: startDateD (offline mode: ignored in online)
+             ! refmodfixed : WARNING always 1 in offline mode
+             ! startDateYobs (online mode: ignored in offline)
+             ! startDateDobs (online mode: ignored in offline)
+             ! startDateYrefmod (online mode: ignored in offline)
+             ! startDateDrefmod (online mode: ignored in offline)
+             ! DataObs
+             ! RefObs
+             ! ErrObs
+             ! ErrObs 2D [lat,lon] or 3D [time,lat,lon] ? 
+             ! RefMod
+             ! DataCov
+             ! Data weights
+             ! Data weights 2D [lat,lon] or 3D [time,lat,lon] ? 
+             ! Model weights
+             ! Model weights 2D [lat,lon] or 3D [time,lat,lon] ?
+!-----------------------------------------------------------------------
+!  var1
+!-----------------------------------------------------------------------
+             temperature_ant  ,
+             atmos           ,
+             X,Y,T,1          ,              
+             1                ,   
+             0.5              , 
+             0.5              ,
+             0                ,
+             file             ,
+             1                ,
+             1                ,
+             1                ,
+             13000,1          ,
+             5950,1           ,
+             '../../input/var_tas_ant_45NN/data/files/temperature_ant_1900-2025.nc',
+             '../../input/var_tas_ant_45NN/data/files/temperature_ant_REF.nc',
+             '../../input/var_tas_ant_45NN/data/files/temperature_std-error_factor-100_error_ant.nc',
+             '2D' ,
+             '../../input/var_tas_ant_45NN/model/files/reference_model.nc',
+             '' ,
+             '' ,
+             '3D',
+             '' ,
+             '2D' ,
+             
+!-----------------------------------------------------------------------
+!  var1
+!-----------------------------------------------------------------------
+             msl_pressure_ant ,
+             atmos2           ,
+             X,Y,T,1          ,              
+             1                ,   
+             0.5              , 
+             0.5              ,
+             0                ,
+             file             ,
+             1                ,
+             1                ,
+             1                ,
+             13000,1          ,
+             5950,1           ,
+             '../../input/var_psl_ant_45NN/data/files/msl_pressure_ant_1900-2025.nc',
+             '../../input/var_psl_ant_45NN/data/files/msl_pressure_ant_REF.nc',
+             '../../input/var_psl_ant_45NN/data/files/msl_pressure_std-error_factor-100_error_ant.nc',
+             '2D' ,
+             '../../input/var_psl_ant_45NN/model/files/reference_model.nc',
+             '' ,
+             '' ,
+             '3D',
+             '' ,
+             '2D' ,
+
+!-----------------------------------------------------------------------
+!  var1
+!-----------------------------------------------------------------------
+             temperature_mid-latitudes  ,
+             atmos3           ,
+             X,Y,T,1          ,              
+             1                ,   
+             0.5              , 
+             0.5              ,
+             0                ,
+             file             ,
+             1                ,
+             1                ,
+             1                ,
+             13000,1          ,
+             5950,1           ,
+             '../../input/var_tas_mid_lat_45NN/data/files/temperature_mid-latitudes_1900-2025.nc',
+             '../../input/var_tas_mid_lat_45NN/data/files/temperature_mid-latitudes_REF.nc',
+             '../../input/var_tas_mid_lat_45NN/data/files/temperature_std-error_factor-100_error_mid-latitudes.nc',
+             '2D' ,
+             '../../input/var_tas_mid_lat_45NN/model/files/reference_model.nc',
+             '' ,
+             '' ,
+             '3D',
+             '' ,
+             '2D' ,
+
+!-----------------------------------------------------------------------
+!  var1
+!-----------------------------------------------------------------------
+             msl_pressure_mid-latitudes  ,
+             atmos4           ,
+             X,Y,T,1          ,              
+             1                ,   
+             0.5              , 
+             0.5              ,
+             0                ,
+             file             ,
+             1                ,
+             1                ,
+             1                ,
+             13000,1          ,
+             5950,1           ,
+             '../../input/var_psl_mid_lat_45NN/data/files/msl_pressure_mid-latitudes_1900-2025.nc',
+             '../../input/var_psl_mid_lat_45NN/data/files/msl_pressure_mid-latitudes_REF.nc',
+             '../../input/var_psl_mid_lat_45NN/data/files/msl_pressure_std-error_factor-100_error_mid-latitudes.nc',
+             '2D' ,
+             '../../input/var_psl_mid_lat_45NN/model/files/reference_model.nc',
+             '' ,
+             '' ,
+             '3D',
+             '' ,
+             '2D' ,
+/
+!-----------------------------------------------------------------------
+&nambox   ! boxes definition
+!-----------------------------------------------------------------------  
+   boxvar    = 
+             wisoaprt_d,
+             159, 319, 159, 160, 310, 319,
+             140,  90, 139, 140,  80,  91,
+             152, 271, 151, 152, 270, 271,
+             142, 258, 141, 142, 250, 258,
+             152, 180, 152, 152, 170, 182,
+             152, 160, 152, 152, 150, 160,
+             144,   2, 144, 145,   1,   4
+/
