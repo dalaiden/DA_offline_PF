@@ -49,7 +49,7 @@ Once the files are generated, the path of the files must be specified in `moddat
 
 ### Experimental design
 
-The timing of the experiment and the options related to the ensemble size are specified in the file assim_offline.sc. For normal use, you are not supposed to change anything beyond the line 51. Here are the parameters to edit:
+The timing of the experiment and the options related to the ensemble size are specified in the file `assim_offline.sc`. For normal use, you are not supposed to change anything beyond the line 51. Here are the parameters to edit:
 
 - **first_year**. The start of the assimilation.
 - **exp_name**. The name of the experiment. It cannot contain any space or special character. A folder of that name will be created in the directory `rundir`, containing the output of the experiment.
