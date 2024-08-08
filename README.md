@@ -4,7 +4,7 @@ This is the offline data assimilation code utilizing a particle filter, as outli
 
 ## Installation
 
-- git clone https://github.com/dalaiden/DA_offline_PF.git
+- `git clone https://github.com/dalaiden/DA_offline_PF.git`
 
 From the main folder:
 - Open the file `src/modules.load` and check that you have all requested libraries at the right place.
