@@ -21,13 +21,13 @@ From the main folder:
 
 The program requires several input files: 
 
-- the observations to assimilate
-- the model ensemble member(s) to build the prior
-- the file containing the error associated with the assimilated observations
+- the observations to assimilate.
+- the model ensemble member(s) to build the prior.
+- the file containing the error associated with the assimilated observations.
 
 The python script `make_inputs.py` creates all these required files.
 
-Once the script finished, the path of the files must be specified in `moddata_co.namelist_brut`, except the model ensemble members, which are included in `assim_offline.sc`:
+Once the files are generated, the path of the files must be specified in `moddata_co.namelist_brut`, except the model ensemble members, which are included in `assim_offline.sc`:
 
 **Line 49-76** Template showing the order in which the information about the variables assimilated should be defined between the lines 65 to 80. One bloc per variable assimilated should be filled in, with always the same structure:
 
