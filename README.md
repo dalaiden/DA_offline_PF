@@ -29,23 +29,23 @@ The python script `make_inputs.py` creates all these required files.
 
 Once the script finished, the path of the files must be specified in `moddata_co.namelist_brut`, except the model ensemble members, which are included in `assim_offline.sc`:
 
-**Line 44-61** Template showing the order in which the information about the variables assimilated should be defined between the lines 65 to 80. One bloc per variable assimilated should be filled in, with always the same structure:
+**Line 49-76** Template showing the order in which the information about the variables assimilated should be defined between the lines 65 to 80. One bloc per variable assimilated should be filled in, with always the same structure:
 
-- var name (mandatory) is the name of the variable to be assimilated, as specified in the netcdf files.
-- var type (mandatory) is the realm of the variable assimilated, ie. atmos or ocean.
-- 4D structure (mandatory) is the dimension of the netcdf file. Do not change, it should always be time*lat*lon.
-- weight (mandatory) is the weight that is given, when more than one variable is assimilated, to each variable assimilated. Set weight to 1 if only one variable is assimilated.
-- sqrt(Ci) (mandatory) is the error of the data if it is uniform. Pay attention, this option has not been tested yet. Currently, the error are provided externally in a netcdf file (see below ErrObs).
-- Sigma (mandatory) Weight for the model covariance matrix. 0 if cov matrix should be diagonal. 
+- var name (mandatory). The name of the variable to be assimilated, as specified in the netcdf files.
+- var type (mandatory). The realm of the variable assimilated, ie. atmos or atmos{2..6}. When several atmopsheric variables are assimilated, add a number after *atmos* (e.g., *atmos2*)
+- 4D structure (mandatory). The dimension of the netcdf file. Do not change.
+- weight (mandatory). The weight that is given, when more than one variable is assimilated, to each variable assimilated. Do not change.
+- sqrt(Ci) (mandatory). Not used anymore.
+- Sigma (mandatory). The weight for the model covariance matrix. 0 if cov matrix should be diagonal. 
 - Number of domains (mandatory) Number of domains used. Set to 1 if no spatial averages are performed.
-- Box Type (optional) If your domain is rectangular, Box Type is set to square. If your box is irregular, Box Type is set to file, whose address is specified in line 28 in box_file.
-- ObsFileStart: startDateY (mandatory) Must be 1.
-- ObsFileStart: startDateD (mandatory) Must be 1.
-- DataObs (mandatory) Netcdf file including the data that should be assimilated, with full path. Dimension should be time*lat*lon.
-- RefObs (optional) Netcdf file of the reference file of the data assimilated, with full path. Usually, it is the average of every January values, February values, ... December values. The size of this file is 12*lat*lon.
-- ErrObs (mandatory) Netcdf file containing the error of the data assimilated, with full path.
-- RefMod (optional) The reference file of the model simulations, with full path. It is usually the average of every January values, February values, ... December values for every ensemble members. The size of this file is 12*lat*lon.
-- Datacov (optional) Netcdf file containing the matrix of covariance for the variable assimilated.
+- Box Type (optional). Not used anymore
+- ObsFileStart: startDateY (mandatory). Must be 1. Do not change.
+- ObsFileStart: startDateD (mandatory). Must be 1. Do not change.
+- DataObs (mandatory). Netcdf file including the data that should be assimilated, with full path.
+- RefObs (mandatory). Netcdf file of the reference file of the data assimilated, with full path.
+- ErrObs (mandatory). Netcdf file containing the error associated with the data assimilated, with full path.
+- RefMod (mandatory). The reference file of the model simulations, with full path.
+- Datacov (optional) Not used anymore.
 
 <!-- ### Experimental design
 
