@@ -1,6 +1,6 @@
 # Offline Data Assimilation (particle filter; UCLouvain-ELIC)
 
-This is the offline data assimilation code utilizing a particle filter, as outlined in Dubinkina et al. (2011). The program has been employed in several recent publications. For further details about the method, please refer to these publications.
+This is the offline data assimilation code utilizing a particle filter, as outlined in Dubinkina et al. (2011).  The program has been employed in several recent publications. For further details about the method, please refer to these publications. The repository contains the data assimilation framework developped for reconstructing the Antarctic sea ice and related variables over 1958-2023 using station-based observations as described in Goosse et al. (2024; ). For further uses, please contact Quentin Dalaiden ([quentin.dalaiden@uclouvain.be](quentin.dalaiden@uclouvain.be)) to adapt the framework. 
 
 ## Installation
 
@@ -47,9 +47,9 @@ Once the script finished, the path of the files must be specified in `moddata_co
 - RefMod (mandatory). The reference file of the model simulations, with full path.
 - Datacov (optional) Not used anymore.
 
-<!-- ### Experimental design
+### Experimental design
 
-The timing of the experiment and the options related to the ensemble size are specified in the file assim_offline.sc. For normal use, you are not supposed to change anything beyond the line 30. Here are the parameters to edit:
+The timing of the experiment and the options related to the ensemble size are specified in the file assim_offline.sc. For normal use, you are not supposed to change anything beyond the line 51. Here are the parameters to edit:
 
 - **exp_name** is the name of your experiment. It cannot contain any space or special character. A folder of that name will be created in the directory rundir, containing the output of the experiment.
 - **duration_model** is the length of the model simulations, expressed in months. It must be a multiple of frequence_assim.
@@ -68,31 +68,6 @@ When two (or more) variables are assimilated, here is how it should be written:
 
 Execute assim_offline.sc. Information about the progress of the program appears on the screen.
 
-Once the first assimilation is finished, an output file containing the the fcosts of the different particles is created in the folder `rundir/<exp_name>/output_fcost`. There is one fcost file per assimilation, with one line per particle. A basic fcost
-looks like:
-
-|NAME | START | END |     FCOST     | CURRENT WEIGHT | TARGET WEIGHT | RESTART COPY | NEW WEIGHT|
-| --- | ----- | --- | ------------- | -------------- | ------------- | ------------ | --------- |
-| 1   |   1   |  12 | 0.9792574E-01 |       1        |      2        |      1       |      1    |
-| 2   |  13   |  24 | 0.2758664E+00 |       1        |      0        |      2       |      1    |
-| 3   |  25   |  36 | 0.7439515E-02 |       1        |      0        |      1       |      1    |
-| 4   |  37   |  48 | 0.6619669E-02 |       1        |      0        |      2       |      1    |
-| 5   |  49   |  60 | 0.2795728E+00 |       1        |      2        |      5       |      1    |
-| 6   |  61   |  72 | 0.2261626E-01 |       1        |      0        |      5       |      1    |
-| 7   |  73   |  84 | 0.7401583E+00 |       1        |      5        |      7       |      1    |
-| 8   |  85   |  96 | 0.5692443E-01 |       1        |      0        |      8       |      1    |
-| 9   |  97   | 108 | 0.3835564E-02 |       1        |      0        |      7       |      1    |
-
-- **NAME** Number to distinguish the ensemble members, from 1 to the ensemble size.
-- **START** Start of the period based on which the fcosts are computed.
-- **END** End of the period based on which the fcosts are computed.
-- **FCOST** Likelihood of the particle.
-- **CURRENT WEIGHT** Always 1, not used here.
-- **TARGET WEIGHT** The weight of the particle, needed to compute the weighted mean leading to the final reconstruction. In this example, the reconstruction for the assimilation step is (part1*2 + part5*2 + part7*5 ) / 9.
-- **RESTART** COPY Only necessary in the online version.
-- **NEW WEIGHT** Only necessary in the online version.
+Once the first assimilation is finished, an output file containing the the fcosts of the different particles is created in the folder `rundir/<exp_name>/output_fcost`. There is one fcost file per assimilation, with one line per particle.
 
 If the program crashes or if you want more information, you can have a look at the log files, located in the folder `rundir/<exp_name>/output_log`. There is one log file per particle.
-
-## References
-Dubinkina, S., Goosse, H., Sallaz-Damaz, Y., Crespin, E., and Crucifix, M.: Testing a particle filter to reconstruct climate changes over the past centuries, International Journal of Bifurcation and Chaos, 21, 3611–3618, doi:10.1142/S0218127411030763,2011. -->
