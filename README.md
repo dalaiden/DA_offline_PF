@@ -1,6 +1,6 @@
 # Offline Data Assimilation (particle filter; UCLouvain-ELIC)
 
-This is the offline data assimilation code utilizing a particle filter, as outlined in Dubinkina et al. (2011).  The program has been employed in several recent publications. For further details about the method, please refer to these publications. The repository contains the data assimilation framework developped for reconstructing the Antarctic sea ice and related variables over 1958-2023 using station-based observations as described in Goosse et al. (2024; ). For further uses, please contact Quentin Dalaiden ([quentin.dalaiden@uclouvain.be](quentin.dalaiden@uclouvain.be)) to adapt the framework. 
+This is the offline data assimilation code utilizing a particle filter, as outlined in Dubinkina et al. (2011).  The program has been employed in several recent publications (see *References* section). For further details about the method, please refer to these publications. The repository contains the data assimilation framework developped for reconstructing the Antarctic sea ice and related variables over 1958-2023 using station-based observations as described in Goosse et al. (2024; ). For further uses, please contact Quentin Dalaiden ([quentin.dalaiden@uclouvain.be](quentin.dalaiden@uclouvain.be)) to adapt the framework. 
 
 ## Installation
 
@@ -38,7 +38,7 @@ Once the script finished, the path of the files must be specified in `moddata_co
 - sqrt(Ci) (mandatory). Not used anymore.
 - Sigma (mandatory). The weight for the model covariance matrix. 0 if cov matrix should be diagonal. 
 - Number of domains (mandatory) Number of domains used. Set to 1 if no spatial averages are performed.
-- Box Type (optional). Not used anymore
+- Box Type (optional). Not used anymore.
 - ObsFileStart: startDateY (mandatory). Must be 1. Do not change.
 - ObsFileStart: startDateD (mandatory). Must be 1. Do not change.
 - DataObs (mandatory). Netcdf file including the data that should be assimilated, with full path.
@@ -51,14 +51,13 @@ Once the script finished, the path of the files must be specified in `moddata_co
 
 The timing of the experiment and the options related to the ensemble size are specified in the file assim_offline.sc. For normal use, you are not supposed to change anything beyond the line 51. Here are the parameters to edit:
 
-- **exp_name** is the name of your experiment. It cannot contain any space or special character. A folder of that name will be created in the directory rundir, containing the output of the experiment.
-- **duration_model** is the length of the model simulations, expressed in months. It must be a multiple of frequence_assim.
-- **duration_data** is the length of the data file that is going to be assimilated. It can be different than duration_model. If duration_data > duration_model, increase_ensemble_size has to be equal to "1".
-- **frequence_assim** is the frequency of the assimilation. It can be equal to 1 (monthly assimilation), 12 (annual mean assimilation), or higher. In the latter case, it has to be a multiple of 12. If frequence_assim > 12, it is not yet possible to increase the ensemble size (the option increase_ensemble_size will have to be equal to 0.)
-- **increase_ensemble_size** determines whether the filter artificially increases the ensemble size by selecting additional particles with a date different from the one of the observations. To activate this option, set increase_ensemble_size to 1. To respect the right timing by only taking into account the particles of the year corresponding to the one in the data file, set increase_ensemble_size to 0.
-- **frequence_sampling** is the frequency of the sampling when you ask the filter to select other particles to the ones of the data (increase_ensemble_size="1"). If the frequency of the assimilation is annual frequence_assim="12", you can set frequence_sampling to whatever value you like. For instance, if frequence_sampling="5", the filter will also consider, besides the particles of the actual year, particles of 1 year out of 5 over the whole period of the assimilation. If the assimilation is monthly (frequence_assim="1"), frequence_sampling should be a multiple of 12, in order to select only particles of the appropriate month. If increase_ensemble_size="0", this parameter won’t be used.
-- **directory_input** The last variable to edit in this file is directory_input. It is the full path of the folder containing the model ensemble members, without the last /. This folder should not contain any other netcdf files. The name of the different nc files
-should only differ from the numbers of the ensemble members. For instance, the files can be named: file_1.nc, file_2.nc, etc. directory_input also contains the realm of the variable to be assimilated, ie. atmos for variables belonging to the atmospheric grid and ocean for variables belonging to the oceanic one., separated by \<space>:\<space>. 
+- **first_year**. The start of the assimilation.
+- **exp_name**. The name of the experiment. It cannot contain any space or special character. A folder of that name will be created in the directory `rundir`, containing the output of the experiment.
+- **moddata_co_file**. The file containing the paramteres of the assimilation.
+- **make_posterior**. If `"True"`, the posterior is calculated at the end of the assimilation. The posterior can be produced later using the `post/make_rec.sh` script. All the variables to reconstruct are specified in `post/make_prior.py` and `post/make_posterior.py`.
+- **outfolder_rec**. The directory where the posterior will be exported.
+- **frequence_sampling**. The frequency of the sampling. For instance, if `frequence_sampling="1"`, the filter will consider all years of the ensemble members. If `frequence_sampling="10"`, the size of the prior will be 10 times smaller.
+- **directory_input** The last variable to edit in this file is directory_input. It is the full path of the folder containing the model ensemble members, without the last */*. This folder should not contain any other netcdf files. The name of the different nc files should only differ from the numbers of the ensemble members. For instance, the files can be named: file_001.nc, file_002.nc, etc. directory_input also contains the realm of the variable to be assimilated, i.e., *atmos* or *atmos2*, separated by \<space>:\<space>. 
 For instance:
 `declare -a directory_input=("/address_atmos_simulations : atmos")`
 When two (or more) variables are assimilated, here is how it should be written:
@@ -71,3 +70,13 @@ Execute assim_offline.sc. Information about the progress of the program appears 
 Once the first assimilation is finished, an output file containing the the fcosts of the different particles is created in the folder `rundir/<exp_name>/output_fcost`. There is one fcost file per assimilation, with one line per particle.
 
 If the program crashes or if you want more information, you can have a look at the log files, located in the folder `rundir/<exp_name>/output_log`. There is one log file per particle.
+
+# References
+
+- Dubinkina, S., Goosse, H., Sallaz-Damaz, Y., Crespin, E., and Crucifix, M.: Testing a particle filter to reconstruct climate changes over the past centuries. International Journal of Bifurcation and Chaos, 21, 3611–3618, [10.1142/S0218127411030763](10.1142/S0218127411030763), 2011.
+- Dalaiden, Q., Goosse, H., Rezsöhazy, J., & Thomas, E. R. : Reconstructing atmospheric circulation and sea-ice extent in the west Antarctic over the past 200 years using data assimilation. Climate Dynamics, 57(11), 3479–3503. [https://doi.org/10.1007/s00382-021-05879-6](https://doi.org/10.1007/s00382-021-05879-6), 2021.
+
+# Contributors
+
+- François Klein
+- Quentin Dalaiden
