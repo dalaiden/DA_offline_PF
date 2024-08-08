@@ -29,7 +29,7 @@ The python script `make_inputs.py` creates all these required files.
 
 Once the files are generated, the path of the files must be specified in `moddata_co.namelist_brut`, except the model ensemble members, which are included in `assim_offline.sc`:
 
-**Line 49-76** Template showing the order in which the information about the variables assimilated should be defined between the lines 65 to 80. One bloc per variable assimilated should be filled in, with always the same structure:
+**Line 49-76** Template showing the order in which the information about the variables assimilated should be defined. One bloc per variable assimilated should be filled in, with always the same structure:
 
 - var name (mandatory). The name of the variable to be assimilated, as specified in the netcdf files.
 - var type (mandatory). The realm of the variable assimilated, ie. atmos or atmos{2..6}. When several atmopsheric variables are assimilated, add a number after *atmos* (e.g., *atmos2*)
