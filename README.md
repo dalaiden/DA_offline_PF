@@ -73,8 +73,10 @@ If the program crashes or if you want more information, you can have a look at t
 
 # References
 
-- Dubinkina, S., Goosse, H., Sallaz-Damaz, Y., Crespin, E., and Crucifix, M.: Testing a particle filter to reconstruct climate changes over the past centuries. International Journal of Bifurcation and Chaos, 21, 3611–3618, [10.1142/S0218127411030763](10.1142/S0218127411030763), 2011.
 - Dalaiden, Q., Goosse, H., Rezsöhazy, J., & Thomas, E. R. : Reconstructing atmospheric circulation and sea-ice extent in the west Antarctic over the past 200 years using data assimilation. Climate Dynamics, 57(11), 3479–3503. [https://doi.org/10.1007/s00382-021-05879-6](https://doi.org/10.1007/s00382-021-05879-6), 2021.
+- Dalaiden, Q., Rezsöhazy, J., Goosse, H., Thomas, E. R., Vladimirova, D. O., & Tetzner, D. : An unprecedented sea ice retreat in the Weddell Sea driving an overall decrease of the Antarctic sea-ice extent over the 20th century. Geophysical Research Letters, 50, e2023GL104666, [https://doi.org/10.1029/2023GL104666](https://doi.org/10.1029/2023GL104666), 2023.
+- Dubinkina, S., Goosse, H., Sallaz-Damaz, Y., Crespin, E., and Crucifix, M.: Testing a particle filter to reconstruct climate changes over the past centuries. International Journal of Bifurcation and Chaos, 21, 3611–3618, [10.1142/S0218127411030763](10.1142/S0218127411030763), 2011.
+- Rezsöhazy, J., Dalaiden, Q., Klein, F., Goosse, H., and Guiot, J.: Using a process-based dendroclimatic proxy system model in a data assimilation framework: a test case in the Southern Hemisphere over the past centuries. Clim. Past, 18, 2093–2115, [https://doi.org/10.5194/cp-18-2093-2022](https://doi.org/10.5194/cp-18-2093-2022), 2022.
 
 # Contributors
 
