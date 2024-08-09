@@ -20,24 +20,17 @@ list_variables = [
 				'TREFHT',
 				'SAM_diff',
 				'sea-ice-extent_regions_RH2014',
-				'sea-ice-area_regions_RH2014',
 				'ICEFRAC',
-				'PRECT',
 				'SST',
-				'U10m',
-				'V10m',
 				  ]
 list_var_units = [
 			  'hPa',
 			  'K',
 			  'unitless',
 			  '10^6 km^2',
-			  '10^6 km^2',
 			  'ratio: 0->1',
 			  'm/s',
 			  'K',
-			  'm s**-1',
-			  'm s**-1',
 				   ]
 
 fname_model_ID = '../info_prior/prior'

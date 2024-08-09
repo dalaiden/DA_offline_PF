@@ -34,7 +34,7 @@ first_year=1958
 exp_name="${first_year}-2025_all_vars_ANN_1std_45NA_ACCESS"
 moddata_co_file=moddata_co.namelist_brut
 make_posterior="True" # To reconstruct the posterior
-outfolder_rec='/cyfast/dalaiden/20th_reconstruction_hgs_fogt/DA_exps_outputs'
+outfolder_rec='/Users/dalaiden/Documents/DA_offline_PF/DA_exps_outputs'
 frequence_sampling="1" # Frequency of the sampling. Will determine how big will the ensemble be. In season, multiple of 4.
 
 # Full location of the folder containing the model input files (without the last "/"), and realm of the variable to be assimilated (ocean or atmos) 

@@ -10,7 +10,7 @@ import shutil
 #-------------
 exp_id = str(sys.argv[-1])
 
-loc_data_prior = '/cyfast/dalaiden/20th_reconstruction_hgs_fogt/LEs/processed'
+loc_data_prior = '/Users/dalaiden/Documents/DA_offline_PF/data_DA_offline_PF/prior'
 
 fname_model_ID = '../rundir/{}/info_prior/prior'.format(exp_id)
 model_ID = open(fname_model_ID, 'r').read()
@@ -23,8 +23,6 @@ year_b_prior = int(open(fname_year_b_prior, 'r').read())
 year_a_ano_prior = np.copy(year_a_prior)
 year_b_ano_prior = np.copy(year_b_prior)
 var_list = {
-	'PRECT'                         : { 'var_ID'  : 'PRECT', 
-										'unit_s'  : 'm/s'},
 	'PSL'                           : { 'var_ID'  : 'PSL', 
 										'unit_s'  : 'Pa'},
 	'TREFHT'                        : { 'var_ID'  : 'TREFHT', 
@@ -33,16 +31,10 @@ var_list = {
 										'unit_s'  : 'ratio (0->)'},
 	'sea-ice-extent_regions_RH2014' : { 'var_ID'  : 'sea-ice-extent_regions_RH2014', 
 										'unit_s'  : '10^6 km^2'},
-	'sea-ice-area_regions_RH2014'   : { 'var_ID'  : 'sea-ice-area_regions_RH2014', 
-										'unit_s'  : '10^6 km^2'},
 	'SAM_diff'                      : { 'var_ID'  : 'SAM_diff', 
 										'unit_s'  : 'unitless'},
 	'SST'                           : { 'var_ID'  : 'SST', 
 										'unit_s'  : 'K'},
-	'U10m'                          : { 'var_ID'  : 'U10m', 
-										'unit_s'  : 'm s**-1'},
-	'V10m'                          : { 'var_ID'  : 'V10m', 
-										'unit_s'  : 'm s**-1'},
 }
 #-------------
 
