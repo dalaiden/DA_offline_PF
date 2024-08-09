@@ -6,7 +6,7 @@ A tarball containing the observations and the prior based on CESM1 is available 
 
 ## Installation
 
-- `git clone https://github.com/dalaiden/DA_offline_PF.git
+- `git clone https://github.com/dalaiden/DA_offline_PF.git`
 
 From the main folder:
 - Open the file `src/modules.load` and check that you have all requested libraries at the right place.
