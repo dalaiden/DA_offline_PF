@@ -2,7 +2,7 @@
 
 This is the offline data assimilation code utilizing a particle filter, as outlined in Dubinkina et al. (2011).  The program has been employed in several recent publications (see *References* section). For further details about the method, please refer to these publications. The repository contains the data assimilation framework developed for reconstructing the Antarctic sea ice and related variables over 1958-2023 using station-based observations as described in Goosse et al. (2024; ). For further uses, please contact Quentin Dalaiden ([quentin.dalaiden@uclouvain.be](quentin.dalaiden@uclouvain.be)) to adapt the framework. 
 
-A tarball containing the observations and the prior based on CESM1 is available at [https://nextcloud.cism.ucl.ac.be/s/PXzK8xK6PRKSaTd](https://nextcloud.cism.ucl.ac.be/s/PXzK8xK6PRKSaTd).
+A tarball containing the observations and the prior based on CESM1 is freely available at [https://nextcloud.cism.ucl.ac.be/s/PXzK8xK6PRKSaTd](https://nextcloud.cism.ucl.ac.be/s/PXzK8xK6PRKSaTd).
 
 ## Installation
 
