@@ -1,6 +1,6 @@
 # Offline Data Assimilation (particle filter; UCLouvain-ELIC)
 
-This is the offline data assimilation code utilizing a particle filter, as outlined in Dubinkina et al. (2011).  The program has been employed in several recent publications (see *References* section). For further details about the method, please refer to these publications. The repository contains the data assimilation framework developped for reconstructing the Antarctic sea ice and related variables over 1958-2023 using station-based observations as described in Goosse et al. (2024; ). For further uses, please contact Quentin Dalaiden ([quentin.dalaiden@uclouvain.be](quentin.dalaiden@uclouvain.be)) to adapt the framework. 
+This is the offline data assimilation code utilizing a particle filter, as outlined in Dubinkina et al. (2011).  The program has been employed in several recent publications (see *References* section). For further details about the method, please refer to these publications. The repository contains the data assimilation framework developed for reconstructing the Antarctic sea ice and related variables over 1958-2023 using station-based observations as described in Goosse et al. (2024; ). For further uses, please contact Quentin Dalaiden ([quentin.dalaiden@uclouvain.be](quentin.dalaiden@uclouvain.be)) to adapt the framework. 
 
 A tarball containing the observations and the prior based on CESM1 is available at [https://nextcloud.cism.ucl.ac.be/s/PXzK8xK6PRKSaTd](https://nextcloud.cism.ucl.ac.be/s/PXzK8xK6PRKSaTd).
 
@@ -9,7 +9,7 @@ A tarball containing the observations and the prior based on CESM1 is available 
 - `git clone https://github.com/dalaiden/DA_offline_PF.git`
 
 From the main folder:
-- Open the file `src/modules.load` and check that you have all requested libraries at the right place.
+- Open the file `src/modules.load` and check that you have all requested libraries in the right place.
 - Execute the Makefile: `cd src; . modules.load; make`.
 - Check that you have your executables: `src/moddata_co` and `src/PartFilter`.
 
@@ -34,7 +34,7 @@ Once the files are generated, the path of the files must be specified in `moddat
 **Line 49-76** Template showing the order in which the information about the variables assimilated should be defined. One bloc per variable assimilated should be filled in, with always the same structure:
 
 - var name (mandatory). The name of the variable to be assimilated, as specified in the netcdf files.
-- var type (mandatory). The realm of the variable assimilated, ie. atmos or atmos{2..6}. When several atmopsheric variables are assimilated, add a number after *atmos* (e.g., *atmos2*)
+- var type (mandatory). The realm of the variable assimilated, ie. atmos or atmos{2..6}. When several atmospheric variables are assimilated, add a number after *atmos* (e.g., *atmos2*)
 - 4D structure (mandatory). The dimension of the netcdf file. Do not change.
 - weight (mandatory). The weight that is given, when more than one variable is assimilated, to each variable assimilated. Do not change.
 - sqrt(Ci) (mandatory). Not used anymore.
@@ -51,15 +51,15 @@ Once the files are generated, the path of the files must be specified in `moddat
 
 ### Experimental design
 
-The timing of the experiment and the options related to the ensemble size are specified in the file `assim_offline.sc`. For normal use, you are not supposed to change anything beyond the line 51. Here are the parameters to edit:
+The timing of the experiment and the options related to the ensemble size are specified in the file `assim_offline.sc`. For normal use, you are not supposed to change anything beyond line 51. Here are the parameters to edit:
 
 - **first_year**. The start of the assimilation.
 - **exp_name**. The name of the experiment. It cannot contain any space or special character. A folder of that name will be created in the directory `rundir`, containing the output of the experiment.
-- **moddata_co_file**. The file containing the paramteres of the assimilation.
+- **moddata_co_file**. The file containing the parameters of the assimilation.
 - **make_posterior**. If `"True"`, the posterior is calculated at the end of the assimilation. The posterior can be produced later using the `post/make_rec.sh` script. All the variables to reconstruct are specified in `post/make_prior.py` and `post/make_posterior.py`.
 - **outfolder_rec**. The directory where the posterior will be exported.
 - **frequence_sampling**. The frequency of the sampling. For instance, if `frequence_sampling="1"`, the filter will consider all years of the ensemble members. If `frequence_sampling="10"`, the size of the prior will be 10 times smaller.
-- **directory_input** The last variable to edit in this file is *directory_input*. It is the full path of the folder containing the model ensemble members, without the last */*. This folder should not contain any other netcdf files. The name of the different nc files should only differ from the numbers of the ensemble members. For instance, the files can be named: file_001.nc, file_002.nc, etc. directory_input also contains the realm of the variable to be assimilated, i.e., *atmos* or *atmos2*, separated by \<space>:\<space>. 
+- **directory_input** The last variable to edit in this file is *directory_input*. It is the full path of the folder containing the model ensemble members, without the last */*. This folder should not contain any other netcdf files. The name of the different nc files should only differ from the number of the ensemble members. For instance, the files can be named: file_001.nc, file_002.nc, etc. directory_input also contains the realm of the variable to be assimilated, i.e., *atmos* or *atmos2*, separated by \<space>:\<space>. 
 For instance:
 `declare -a directory_input=("/address_atmos_simulations : atmos")`
 When two (or more) variables are assimilated, here is how it should be written:
@@ -67,9 +67,9 @@ When two (or more) variables are assimilated, here is how it should be written:
 
 ## Launch an experiment and get results
 
-Execute assim_offline.sc. Information about the progress of the program appears on the screen.
+Execute `assim_offline.sc`. Information about the progress of the program appears on the screen.
 
-Once the first assimilation is finished, an output file containing the the fcosts of the different particles is created in the folder `rundir/<exp_name>/output_fcost`. There is one fcost file per assimilation, with one line per particle.
+Once the first assimilation is finished, an output file containing the fcosts of the different particles is created in the folder `rundir/<exp_name>/output_fcost`. There is one fcost file per assimilation, with one line per particle.
 
 If the program crashes or if you want more information, you can have a look at the log files, located in the folder `rundir/<exp_name>/output_log`. There is one log file per particle.
 
