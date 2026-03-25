@@ -1,2 +1,2 @@
-# Data assimilation of Antarctic ice cores 
+# Data assimilation of European tree-ring records
 
