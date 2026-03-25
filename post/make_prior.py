@@ -10,8 +10,6 @@ import shutil
 #-------------
 exp_id = str(sys.argv[-1])
 
-loc_data_prior = '/Users/dalaiden/Documents/DA_offline_PF/data_DA_offline_PF/prior'
-
 fname_model_ID = '../rundir/{}/info_prior/prior'.format(exp_id)
 model_ID = open(fname_model_ID, 'r').read()
 
@@ -22,7 +20,14 @@ fname_year_b_prior = '../rundir/{}/info_prior/year_b_prior'.format(exp_id)
 year_b_prior = int(open(fname_year_b_prior, 'r').read())
 year_a_ano_prior = np.copy(year_a_prior)
 year_b_ano_prior = np.copy(year_b_prior)
+
+fname_tresolution = '../rundir/{}/info_prior/tresolution_assim'.format(exp_id)
+tresolution = int(open(fname_tresolution, 'r').read())
+
+indir_prior = '/nas07/dalaiden/cyfast/20th_reconstruction_hgs_fogt/LEs/processed'
 var_list = {
+	'PRECT'                         : { 'var_ID'  : 'PRECT', 
+										'unit_s'  : 'm/s'},
 	'PSL'                           : { 'var_ID'  : 'PSL', 
 										'unit_s'  : 'Pa'},
 	'TREFHT'                        : { 'var_ID'  : 'TREFHT', 
@@ -31,10 +36,14 @@ var_list = {
 										'unit_s'  : 'ratio (0->)'},
 	'sea-ice-extent_regions_RH2014' : { 'var_ID'  : 'sea-ice-extent_regions_RH2014', 
 										'unit_s'  : '10^6 km^2'},
+	'V10m'                          : { 'var_ID'  : 'V10m', 
+										'unit_s'  : 'm/s'},
+	'U10m'                          : { 'var_ID'  : 'U10m', 
+										'unit_s'  : 'm/s'},
 	'SAM_diff'                      : { 'var_ID'  : 'SAM_diff', 
 										'unit_s'  : 'unitless'},
-	'SST'                           : { 'var_ID'  : 'SST', 
-										'unit_s'  : 'K'},
+	'd18Op_weighted'                : { 'var_ID'  : 'd18Op_weighted', 
+										'unit_s'  : 'o/oo'},				                    				  
 }
 #-------------
 
@@ -54,9 +63,28 @@ def mkdir_p(path):
 		else:
 			raise
 
-if model_ID == 'iCESM1':
+def avy_gen(matrix, period_len):
+
+	import numpy as np
+
+	# Sanity check
+	if matrix.shape[0] % period_len != 0:
+		print('time length of matrix must be divived by {}'.format(period_len))
+		sys.exit()
+
+	new_mat = np.empty_like(matrix) * np.nan
+	new_mat = new_mat[0:int(new_mat.shape[0]/period_len),...]
+
+	for i in range(new_mat.shape[0]):
+		first_line = 0 + (period_len*i)
+		last_line = first_line+period_len
+		new_mat[i,...] = np.nanmean(matrix[first_line:last_line,...], axis=0)
+
+	return new_mat
+
+if model_ID == 'iCESM1_LM':
 	nb_members = 3
-	years_prior = np.arange(851,2005+1)
+	years_prior = np.arange(850,2005+1)
 elif model_ID == 'CanESM2':
 	nb_members=50
 	years_prior = np.arange(1950, 2100+1)
@@ -85,24 +113,11 @@ elif model_ID == 'IPSL-CM6A-LR':
 	nb_members=33
 	years_prior = np.arange(1850, 2014+1)
 elif model_ID == 'MPI-ESM':
-	nb_members=99
+	nb_members=100
 	years_prior = np.arange(1850, 2099+1)
 elif model_ID == 'NorCPM1':
 	nb_members=30
 	years_prior = np.arange(1850, 2014+1)
-elif model_ID == 'CanESM5':
-    nb_members=40
-    years_prior = np.arange(1850, 2014+1)
-elif model_ID == 'MIROC6':
-    nb_members=50
-    years_prior = np.arange(1850, 2014+1)
-elif model_ID == 'UKESM1-0-LL':
-    nb_members=14
-    years_prior = np.arange(1850, 2014+1)
-elif model_ID == 'ACCESS-ESM1-5':
-    nb_members=40
-    years_prior = np.arange(1850, 2014+1)
-
 
 print('create the prior for {} over {}-{}'.format(model_ID, year_a_prior, year_b_prior))
 
@@ -115,7 +130,7 @@ for var in var_list:
 	unit_s = var_list[var]['unit_s']
 
 	# Load data
-	fname = '{}/{}/{}/{}_{}-LE_ANN_{}-{}.nc'.format(loc_data_prior, model_ID, var_ID, var_ID, model_ID, years_prior[0], years_prior[-1])
+	fname = '{}/{}/{}/{}_{}-LE_ANN_{}-{}.nc'.format(indir_prior, model_ID, var_ID, var_ID, model_ID, years_prior[0], years_prior[-1])
 	nc = Dataset(fname)
 	data_all = nc.variables[var][:]
 	if (var_ID != 'sea-ice-extent_regions_RH2014') & (var_ID != 'sea-ice-area_regions_RH2014') & (var_ID != 'SAM_diff'):
@@ -141,6 +156,9 @@ for var in var_list:
 		# Keep the year_a - year_b period
 		data_m = data_m[(years_prior >= year_a_prior) & (years_prior <= year_b_prior),...]
 
+		if tresolution != 1:
+			data_m = avy_gen(data_m, tresolution)
+
 		# Export to netcdf
 		output_dir = '{}/{}'.format(pid_s, var_ID)
 		if imember == 0:
@@ -157,7 +175,7 @@ for var in var_list:
 		elif len(np.shape(data_m)) == 3:
 			dimid_lon = ncid.createDimension('lon', lon.shape[1])
 			dimid_lat = ncid.createDimension('lat', lon.shape[0])
-		dimid_time = ncid.createDimension('time', int(year_b_prior-year_a_prior+1))
+		dimid_time = ncid.createDimension('time', int(year_b_prior-year_a_prior+1)/tresolution)
 
 		# define variables
 		if len(np.shape(data_m)) == 2:
@@ -201,7 +219,7 @@ for var in var_list:
 			varid_lon[:] = lon[0, :]
 			varid_lat[:] = lat[:, 0]
 
-		varid_time[:] = np.arange(year_a_prior, year_b_prior+1)
+		varid_time[:] = avy_gen(np.arange(year_a_prior, year_b_prior+1), tresolution)
 		varid_zg[:] = data_m
 
 		ncid.close()

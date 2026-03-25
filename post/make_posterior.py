@@ -14,23 +14,28 @@ import shutil
 nb_cores = 2 # 5
 exp_id = str(sys.argv[-2])
 outfolder = str(sys.argv[-1])
-year_b = 2025
 list_variables = [
 				'PSL',
 				'TREFHT',
+				'd18Op_weighted',
 				'SAM_diff',
 				'sea-ice-extent_regions_RH2014',
 				'ICEFRAC',
-				'SST',
+				'PRECT',
+				'V10m',
+				'U10m',
 				  ]
 list_var_units = [
 			  'hPa',
 			  'K',
+			  'o/oo'
 			  'unitless',
+			  '10^6 km^2',
 			  '10^6 km^2',
 			  'ratio: 0->1',
 			  'm/s',
-			  'K',
+			  'm/s',
+			  'm/s',
 				   ]
 
 fname_model_ID = '../info_prior/prior'
@@ -50,8 +55,12 @@ def mkdir_p(path):
 # Load the pid
 pid_s = int(open('pid_s', 'r').read())
 
-# Load the first year of the reconstruction
+# Load the first and year of the reconstruction
 year_a = int(open('../rundir/{}/first_year_rec'.format(exp_id), 'r').read())
+year_b = int(open('../rundir/{}/last_year_rec'.format(exp_id), 'r').read())
+
+fname_tresolution = '../rundir/{}/info_prior/tresolution_assim'.format(exp_id)
+tresolution = int(open(fname_tresolution, 'r').read())
 
 print('Make the posterior ({})'.format(outfolder))
 
@@ -279,7 +288,7 @@ for i_var in range(len(list_variables)):
 	temp_var_nc3.units     = '0->1'
 
 	# Fill the nc
-	time_attr[:] = np.arange(nb_years)
+	time_attr[:] = np.arange(nb_years) * tresolution
 	if len(np.shape(weighted_std)) == 3:
 		lon_attr[:]  = lon
 		lat_attr[:]  = lat
