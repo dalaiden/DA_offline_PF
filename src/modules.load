@@ -2,14 +2,6 @@
 
 echo "DA_offline environment"
 
-if [[ `hostname` = "aurora"* ]]; then
-  echo "AURORA"
-  module purge
-  module load releases/2018b
-  module load intel/2018b
-  module load netCDF-Fortran/4.4.4-intel-2018b  
-fi
-
 if [[ `hostname` = "storm"* ]]; then
   echo "STORM"
   module purge
@@ -28,8 +20,6 @@ fi
 if [[ `hostname` = "cyclone"* ]]; then
   echo "CYCLONE"
   module purge
-  # module load releases/2023b
-  # module load opensuse
-  # module load intel/2018.4.057 netCDF-Fortran/4.4.4-intel
-  module load intel/2024a netCDF-Fortran/4.6.1-gompi-2024a
+  module load opensuse
+  module load intel/2018.4.057 netCDF-Fortran/4.4.4-intel
 fi

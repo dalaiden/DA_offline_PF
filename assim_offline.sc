@@ -30,45 +30,27 @@ printf "\rProgress : [${_fill// /#}${_empty// /-}] ${_progress}%%"
 #-------------
 # Parameters |
 #-------------
-first_year=1998 # Make it accordindly to tresolution (every 5 for instance)
-tresolution=5
-if [ $tresolution = "1" ]; then
-    last_year=2025
-elif [ $tresolution = "5" ]; then
-    last_year=2023
-else
-    echo "define the last year of the reconstruction; EXIT"
-    exit 1
-fi
-exp_name="${first_year}-${last_year}_all_vars_1dot5std_SH_500km-grid_sx200_xy100_tassim_${tresolution}_test"
-moddata_co_file=moddata_co_1dot5std_5yr
+first_year=2007
+exp_name="${first_year}-2020_all_records_UKESM_20240422_v4"
+moddata_co_file=moddata_co.namelist_brut
 make_posterior="True" # To reconstruct the posterior
-outfolder_rec='/nas07/dalaiden/cyfast/paleoPF_ant/DA_exps_outputs'
-frequence_sampling="15" #
-if [ $tresolution = "1" ]; then
-    duration_data="1026"  # length of data to be assimilated.
-    first_year_obs_file=1000
-elif [ $tresolution = "5" ]; then
-    duration_data="205"
-    first_year_obs_file=1003
-else
-    echo "define the length of the data and the first of the data; EXIT"
-    exit 1
-fi
+outfolder_rec='/cyfast/dalaiden/DA_output' # change to your username
+frequence_sampling="20" # I have done 2 experiences, the first one with frequence_sampling="10"
+# Frequency of the sampling. Will determine how big will the ensemble be. In season, multiple of 4.
 
 # Full location of the folder containing the model input files (without the last "/"), and realm of the variable to be assimilated (ocean or atmos) 
 here=$(pwd)
-address_model_ensemble=("${here}/input/var_accu/model/files/ensemble"
-                        "${here}/input/var_d18Op/model/files/ensemble")
-declare -a directory_input=(""${address_model_ensemble[0]}" : atmos"
-                            ""${address_model_ensemble[1]}" : atmos2") # two variables assimilated
+address_model_ensemble=("${here}/input/var_TRW_tas/model/files/ensemble")
+declare -a directory_input=(""${address_model_ensemble[0]}" : atmos") # two variable assimilated
 
 ###################################################################
 # DON'T EDIT NEXT LINES
 ###################################################################
 
 # Length of input files and frequency of the assimilation
-frequence_assim="1" # frequency of assim: 1 (monthly) or 12 (annual). Can be more (multiple of 12).
+duration_data="621" # length of data to be assimilated (in seasons). Can be different than duration_model. If duration_data > duration_model, increase_ensemble_size has to be equal to "1". 
+first_year_obs="1400"
+frequence_assim="1"
 
 # Increase ensemble size options
 increase_ensemble_size="1" # "1" to increase the ensemble size by selecting particles that belong to other years than the actual year of experiment, "0" to limit the ensemble size to the number of model simulations actually available.
@@ -88,12 +70,12 @@ source src/modules.load
 echo "-------------------------"
 
 echo "Experiment name: ${exp_name}"
-echo "Period: ${first_year}-${last_year} (annual assimilation)"
+echo "Period: ${first_year}-2020 (annual assimilation)"
 echo "Namelist: ${moddata_co_file}"
 nb_particles=$( expr $nb_simus '*' $duration_model '/' "$frequence_sampling" )
 echo "Number of particles: $nb_particles"
 
-offset_data=$(expr \( ${first_year} - ${first_year_obs_file} \) / ${tresolution})
+offset_data=`expr ${first_year} - ${first_year_obs}`
 offset_data=$( expr 1 '*' "$offset_data" )
 
 rm -rf rundir/$exp_name
@@ -103,7 +85,6 @@ mkdir -p rundir/$exp_name
 # Copy the information related to the prior
 cp -r info_prior rundir/$exp_name/.
 echo "$first_year" > rundir/$exp_name/first_year_rec
-echo "$last_year" > rundir/$exp_name/last_year_rec
 
 cd rundir/$exp_name
 

@@ -7,8 +7,8 @@ module load ELIC_Python/1-foss-2022b
 #-------------
 # Parameters |
 #-------------
-exp_name='1998-2023_all_vars_1dot5std_SH_500km-grid_sx200_xy100_tassim_5'
-outfolder_rec='/nas07/dalaiden/cyfast/paleoPF_ant/DA_exps_outputs'
+exp_name='1850-2020_all_records_CESM1-LM_20240422_v2'
+outfolder_rec='/cyfast/hxue/DA_output'
 #-------------
 
 echo '-----------------------'
@@ -16,5 +16,5 @@ echo "Reconstruct the fields|"
 echo '-----------------------'
 
 export PYTHONWARNINGS="ignore"
-python -W ignore make_prior.py $exp_name
-python -W ignore make_posterior.py $exp_name $outfolder_rec
+python -W ignore make_prior_VPD.py $exp_name
+python -W ignore make_posterior_VPD.py $exp_name $outfolder_rec
