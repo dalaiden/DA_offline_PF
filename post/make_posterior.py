@@ -11,29 +11,40 @@ from joblib import Parallel, delayed
 import shutil
 
 # Parameters
-nb_cores = 3 # 5
+nb_cores = 4 # 5
 exp_id = str(sys.argv[-2])
 outfolder = str(sys.argv[-1])
 year_b = 2020
 list_variables = [
 				'PSL',
 				'TREFHT',
-				'PRECT'
+				'PRECT',
+				'PDSI',
+				'Z_300hpa',
+                'Z_500hpa',
+                'U_850hpa',
+                'V_850hpa',
+                'Z_800hpa'
 				  ]
 list_var_units = [
-			  'hPa',
+			  'Pa',
 			  'K',
 			  'm/s'
+			  'unitless'
+			  'm'
+              'm'
+              'm/s',
+              'm/s'
+              'm'
 				   ]
 
-# list_seasons = ['January','February','March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December','ANN']
-list_seasons = ['JJA','MAMJJAS']
-# season_id = 'MAMJJAS'
+list_seasons = ['JJA','MAM']
+
 
 fname_model_ID = '../info_prior/prior'
 model_ID = open(fname_model_ID, 'r').read()
-#-----------------
 
+#-----------------
 def mkdir_p(path):
 	try:
 		os.makedirs(path)

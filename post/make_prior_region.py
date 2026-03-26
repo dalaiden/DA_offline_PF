@@ -10,8 +10,7 @@ import shutil
 #-------------
 exp_id = str(sys.argv[-1])
 
-loc_data_prior = '/cyfast/hxue/Data_processed/LEs' 
-# loc_data_prior = '/cyfast/dalaiden/LEs/processed'
+loc_data_prior = '/cyfast/hxue/Data_processed/LEs'
 
 fname_model_ID = '../rundir/{}/info_prior/prior'.format(exp_id)
 model_ID = open(fname_model_ID, 'r').read()
@@ -24,19 +23,16 @@ year_b_prior = int(open(fname_year_b_prior, 'r').read())
 year_a_ano_prior = np.copy(year_a_prior)
 year_b_ano_prior = np.copy(year_b_prior)
 var_list = {
-	# 'PRECT'                         : { 'var_ID'  : 'PRECT', 
-	# 									'unit_s'  : 'm/s'},
-	# 'PSL'                           : { 'var_ID'  : 'PSL', 
-	# 									'unit_s'  : 'Pa'},
-	# 'TREFHT'                        : { 'var_ID'  : 'TREFHT', 
-	# 									'unit_s'  : 'K'},	
-    'VPD'                          : { 'var_ID'  : 'VPD', 
-                                        'unit_s'  : 'hpa'}											                    				  
-}
-# list_seasons = ['January','February','March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+	'PRECT'                         : { 'var_ID'  : 'PRECT', 
+										'unit_s'  : 'm/s'},
+	'TREFHT'                        : { 'var_ID'  : 'TREFHT', 
+										'unit_s'  : 'K'},	
+	'PDSI'                          : { 'var_ID'  : 'PDSI', 
+										'unit_s'  : 'unitless'}}
 
-list_seasons = ['JJA','MAMJJAS','ANN']
-list_regions = ['NE','WCE','EEU','MED']
+
+list_seasons = ['JJA','MAMJJAS']
+list_regions = ['NE','WCE','MED']
 
 #-------------
 

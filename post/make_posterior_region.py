@@ -15,31 +15,23 @@ nb_cores = 3 # 5
 exp_id = str(sys.argv[-2])
 outfolder = str(sys.argv[-1])
 year_b = 2020
-# list_variables = [
-# 				'PSL',
-# 				'TREFHT',
-# 				'PRECT'
-# 				  ]
-# list_var_units = [
-# 			  'hPa',
-# 			  'K',
-# 			  'm/s'
-# 				   ]
 list_variables = [
-				'VPD'
-				  ]
+				'TREFHT',
+				'PRECT',
+				'PDSI']
+
 list_var_units = [
-			  'hPa'
-				   ]
+			  'K',
+			  'm/s',
+			  'unitless']
 
 
-# list_seasons = ['January','February','March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-list_seasons = ['JJA','MAMJJAS','ANN']
+list_seasons = ['JJA','MAMJJAS']
 
 fname_model_ID = '../info_prior/prior'
 model_ID = open(fname_model_ID, 'r').read()
 
-list_regions = ['NE','WCE','EEU','MED']
+list_regions = ['NE','WCE','MED']
 #-----------------
 
 def mkdir_p(path):

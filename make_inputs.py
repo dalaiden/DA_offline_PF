@@ -12,43 +12,47 @@ import func_Q as fq
 
 Several priors are available:
 
-    1. CanESM2           1950 - 2100 (n = 50)
-    3. CESM1_LM          0850 - 2005 (n = 12)
-    4. CESM2             1850 - 2100 (n = 100)
-    5. CNRM-CM6-1        1850 - 2014 (n = 19)
-    9. IPSL-CM6A-LR      1850 - 2014 (n = 33)
-   10. MPI-ESM           1850 - 2099 (n = 100) !! No at the moment
+	1. CanESM2           1950 - 2100 (n = 50)
+	2. CESM1             1920 - 2080 (n = 35)
+	3. CESM1_LM          0850 - 2005 (n = 12)
+	4. CESM2             1850 - 2100 (n = 100)
+	5. CNRM-CM6-1        1850 - 2014 (n = 19)
+	6. CSIRO-Mk3-6-0     1850 - 2100 (n = 30)
+	7. GFDL-CM3          1920 - 2100 (n = 20)
+	8. GFDL-ESM2M        1950 - 2100 (n = 30)
+	9. IPSL-CM6A-LR      1850 - 2014 (n = 33)
+   10. MPI-ESM           1850 - 2099 (n = 100)
    11. NorCPM1           1850 - 2014 (n = 30)
-   12. CanESM5           1850 - 2014 (n = 40)
-   13. MIROC6            1850 - 2014 (n = 50) !! No at the moment
-   14. UKESM1-0-LL       1850 - 2014 (n = 14)
-   15. ACCESS-ESM1-5     1850 - 2014 (n = 40)
 
 """
 
 # Parameters
 var_list = {
-	'var_TRW_tas'         : { 'var_ID'       : 'temperature', 
-							  'obs_file'     : 'Temperature_records_20240313_1x1.xlsx',
-							  'folder_error' : 'results_20240313_TEM_1x1',
+	'var_TRW_pr2'          : { 'var_ID'   : 'precipitation_Medi',
+							  'obs_file' : 'supply_Medi_20240720.xlsx',
+							  'folder_error' : 'results_20240720_prcp_1X1',
 							  },
-	# 'var_TRW_pr'          : { 'var_ID'   : 'precipitation',
-	# 						  'obs_file' : 'Precipitation_records_20240313_1x1.xlsx',
-	# 						  'folder_error' : 'results_20240313_PRE_1x1',
-	# 						  },
+	'var_TRW_pr1'          : { 'var_ID'   : 'precipitation',
+							  'obs_file' : 'Precipitation_records_20240619_1x1.xlsx',
+							  'folder_error' : 'results_20240720_prcp_1X1',
+							  },
+	'var_TRW_tas'         : { 'var_ID'       : 'temperature', 
+							  'obs_file'     : 'Temperature_records_20240619_1X1.xlsx',
+							  'folder_error' : 'results_20240619_tem_1X1',
+							  }					  
 	
 }
 
-loc_data = '/home/elic/dalaiden/DA_tree_Europe/TRW_records'
-loc_data_prior = '/cyfast/dalaiden/20th_reconstruction_hgs_fogt/LEs/processed'
-loc_PSM_results = '/home/elic/dalaiden/DA_tree_Europe/TRW_PSM'
+loc_data = '/home/elic/hxue/TRW_PSM/TRW_records'
+loc_data_prior = '/cyfast/dalaiden/LEs/processed'
+loc_PSM_results = '/home/elic/hxue/TRW_PSM'
 year_a_ano = 1901 # Observations
 year_b_ano = 2000 # Observations
-model_ID = 'UKESM1-0-LL'
-year_a_prior = 1850
-year_b_prior = 2014
-year_a_ano_prior = 1850
-year_b_ano_prior = 1950
+model_ID = 'CESM1_LM'
+year_a_prior = 850
+year_b_prior = 1850
+year_a_ano_prior = 850
+year_b_ano_prior = 1850
 error_inflation = np.arange(0.1, 10.1, 0.1)
 default_value_constant_error = 1
 #-----------------------
@@ -76,53 +80,41 @@ os.system('mkdir -p input')
 os.chdir('input') # change the path to 'input/'
 
 if model_ID == 'iCESM1':
-    nb_members = 3
-    years_prior = np.arange(851,2005+1)
+	nb_members = 3
+	years_prior = np.arange(851,2005+1)
 elif model_ID == 'CanESM2':
-    nb_members=50
-    years_prior = np.arange(1950, 2100+1)
+	nb_members=50
+	years_prior = np.arange(1950, 2100+1)
 elif model_ID == 'CESM1':
-    nb_members=35
-    years_prior = np.arange(1850, 2100+1)
+	nb_members=35
+	years_prior = np.arange(1850, 2100+1)
 elif model_ID == 'CESM1_LM':
-    nb_members=12
-    years_prior = np.arange(850, 2005+1)
+	nb_members=12
+	years_prior = np.arange(850, 2005+1)
 elif model_ID == 'CESM2':
-    nb_members=100
-    years_prior = np.arange(1850, 2100+1)
+	nb_members=100
+	years_prior = np.arange(1850, 2100+1)
 elif model_ID == 'CNRM-CM6-1':
-    nb_members=19
-    years_prior = np.arange(1850, 2014+1)
+	nb_members=19
+	years_prior = np.arange(1850, 2014+1)
 elif model_ID == 'CSIRO-Mk3-6-0':
-    nb_members=30
-    years_prior = np.arange(1850, 2100+1)
+	nb_members=30
+	years_prior = np.arange(1850, 2100+1)
 elif model_ID == 'GFDL-CM3':
-    nb_members=20
-    years_prior = np.arange(1920, 2100+1)
+	nb_members=20
+	years_prior = np.arange(1920, 2100+1)
 elif model_ID == 'GFDL-ESM2M':
-    nb_members=30
-    years_prior = np.arange(1950, 2100+1)
+	nb_members=30
+	years_prior = np.arange(1950, 2100+1)
 elif model_ID == 'IPSL-CM6A-LR':
-    nb_members=33
-    years_prior = np.arange(1850, 2014+1)
+	nb_members=33
+	years_prior = np.arange(1850, 2014+1)
 elif model_ID == 'MPI-ESM':
-    nb_members=100
-    years_prior = np.arange(1850, 2099+1)
+	nb_members=100
+	years_prior = np.arange(1850, 2099+1)
 elif model_ID == 'NorCPM1':
-    nb_members=30
-    years_prior = np.arange(1850, 2014+1)
-elif model_ID == 'CanESM5':
-    nb_members=40
-    years_prior = np.arange(1850, 2014+1)
-elif model_ID == 'MIROC6':
-    nb_members=50
-    years_prior = np.arange(1850, 2014+1)
-elif model_ID == 'UKESM1-0-LL':
-    nb_members=14
-    years_prior = np.arange(1850, 2014+1)
-elif model_ID == 'ACCESS-ESM1-5':
-    nb_members=40
-    years_prior = np.arange(1850, 2014+1)
+	nb_members=30
+	years_prior = np.arange(1850, 2014+1)
 
 # Loop on all the variables to create
 for dir_out in var_list:
@@ -146,7 +138,7 @@ for dir_out in var_list:
 
 	# Load observations
 	fname = '{}/{}'.format(loc_data, fname_obs)
-	dfs = pd.read_excel(fname, sheet_name='Matedata')
+	dfs = pd.read_excel(fname, sheet_name='Metadata')
 	lat_records = dfs.grid_lat.values
 	lon_records = dfs.grid_lon.values
 	site_names = dfs.Number.values
@@ -154,8 +146,8 @@ for dir_out in var_list:
 	dfs = pd.read_excel(fname, sheet_name='Values', header=None)
 	# years_data = dfs.values[:,0]
 	# data_records = dfs.values[:,1:]	
-	years_data = dfs.values[1399:,0]
-	data_records = dfs.values[1399:,1:]
+	years_data = dfs.values[999:,0]
+	data_records = dfs.values[999:,1:]
 	del dfs
 	obs_start_yr = int(years_data[0])
 	obs_end_yr = int(years_data[-1])

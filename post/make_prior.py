@@ -10,8 +10,7 @@ import shutil
 #-------------
 exp_id = str(sys.argv[-1])
 
-# loc_data_prior = '/cyfast/hxue/Data_processed/LEs' # just for MAMJJAS season
-loc_data_prior = '/cyfast/dalaiden/20th_reconstruction_hgs_fogt/LEs/processed'
+loc_data_prior = '/cyfast/hxue/Data_processed/LEs' 
 
 fname_model_ID = '../rundir/{}/info_prior/prior'.format(exp_id)
 model_ID = open(fname_model_ID, 'r').read()
@@ -29,10 +28,24 @@ var_list = {
 	'PSL'                           : { 'var_ID'  : 'PSL', 
 										'unit_s'  : 'Pa'},
 	'TREFHT'                        : { 'var_ID'  : 'TREFHT', 
-										'unit_s'  : 'K'}		                    				  
-}
-list_seasons = ['JJA','MAMJJAS']
-# season_id = 'MAMJJAS'
+										'unit_s'  : 'K'},
+	'PDSI'                          : { 'var_ID'  : 'PDSI', 
+										'unit_s'  : 'unitless'},
+	'Z_300hpa'                      : { 'var_ID'  : 'Z_300hpa', 
+										'unit_s'  : 'm'},
+    'Z_500hpa'                      : { 'var_ID'  : 'Z_500hpa', 
+                                      'unit_s'  : 'm'},
+    'Z_800hpa'                      : { 'var_ID'  : 'Z_800hpa', 
+                                      'unit_s'  : 'm'},
+    'U_850hpa'                      : { 'var_ID'  : 'U_850hpa',
+                                               'unit_s'  : 'm/s'},
+    'V_850hpa'                      : { 'var_ID'  : 'V_850hpa',    
+                                        'unit_s'  : 'm/s'}
+    }								
+
+
+list_seasons = ['JJA','MAM']
+
 #-------------
 
 pid_s = os.getpid()
@@ -82,23 +95,11 @@ elif model_ID == 'IPSL-CM6A-LR':
 	nb_members=33
 	years_prior = np.arange(1850, 2014+1)
 elif model_ID == 'MPI-ESM':
-	nb_members=99
+	nb_members=100
 	years_prior = np.arange(1850, 2099+1)
 elif model_ID == 'NorCPM1':
 	nb_members=30
 	years_prior = np.arange(1850, 2014+1)
-elif model_ID == 'CanESM5':
-    nb_members=40
-    years_prior = np.arange(1850, 2014+1)
-elif model_ID == 'MIROC6':
-    nb_members=50
-    years_prior = np.arange(1850, 2014+1)
-elif model_ID == 'UKESM1-0-LL':
-    nb_members=14
-    years_prior = np.arange(1850, 2014+1)
-elif model_ID == 'ACCESS-ESM1-5':
-    nb_members=40
-    years_prior = np.arange(1850, 2014+1)
 
 print('create the prior for {} over {}-{}'.format(model_ID, year_a_prior, year_b_prior))
 
@@ -121,18 +122,12 @@ for var in var_list:
 		fname = '{}/{}/{}/{}_{}-LE_{}_{}-{}.nc'.format(loc_data_prior, model_ID, var_ID, var_ID, model_ID, season_id, years_prior[0], years_prior[-1])
 		nc = Dataset(fname)
 		data_all = nc.variables[var][:]
-		if (var_ID != 'sea-ice-extent_regions_RH2014') & (var_ID != 'sea-ice-area_regions_RH2014') & (var_ID != 'SAM_diff'):
-			lat_raw, lon_raw = nc.variables['lat'][:], nc.variables['lon'][:]
-			lon, lat = np.meshgrid(lon_raw, lat_raw)
+		lat_raw, lon_raw = nc.variables['lat'][:], nc.variables['lon'][:]
+		lon, lat = np.meshgrid(lon_raw, lat_raw)
 		nc.close()
 
 		data_all[np.abs(data_all) > 100000000] = np.nan
 
-		if (var_ID == 'sea-ice-extent_regions_RH2014') | (var_ID == 'sea-ice-area_regions_RH2014'):
-
-			data_all = np.concatenate((data_all, (data_all[:,:,0] + data_all[:,:,4])[:,:,None]), axis=-1) # West Antarctica
-			data_all = np.concatenate((data_all, (data_all[:,:,1] + data_all[:,:,2] + data_all[:,:,3])[:,:,None]), axis=-1) # East Antarctica 
-			data_all = np.concatenate((data_all, (data_all[:,:,2] + data_all[:,:,3])[:,:,None]), axis=-1) # 'King Hakon' + 'East Antarctica'
 
 		for imember in range(data_all.shape[0]):
 			
